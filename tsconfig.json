@@ -17,5 +17,11 @@
         "jsx": "react-jsx"
     },
     "include": ["src", "./*.ts"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "references": [{ "path": "./tsconfig.node.json" }],
+    "exclude": ["node_modules", "dist"],
+    "types":[],
+    "typeRoots": ["./node_modules/@types"],
+    "ts-node": {
+        "transpileOnly": true
+    }
 }
