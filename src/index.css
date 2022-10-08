@@ -6,7 +6,7 @@
   :root {
     --text-primary: #fff;
     --text-secondary: #000;
-    --bg-primary: #2a2d43;
+    --bg-primary: #F7CAC9;
     --bg-secondary: #7f2ccb;
     --brand-primary: #ffa9e7;
     --brand-secondary: #ff84e8;
@@ -23,7 +23,6 @@
   html,
   body {
     overflow-x: hidden;
-    overflow-y: hidden;
     scroll-behavior: smooth;
   }
 

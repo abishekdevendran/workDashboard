@@ -3,12 +3,15 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContextProvider } from '../contexts/userContext';
+// import { EmployeeContextProvider } from '../contexts/employeeContext';
 import AntiProtectedRoute from './AntiProtectedRoute';
 import Dashboard from './Dashboard';
 import Home from './Home';
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
-import Register from './Register';
+import AddNewUser from './AddNewUser';
+import TasksView from './TasksView';
+import EmployeesView from './EmployeesView';
 
 const queryClient = new QueryClient();
 
@@ -16,9 +19,9 @@ const App = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <UserContextProvider>
+                {/* <EmployeeContextProvider> */}
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Home />} />
                         <Route
                             path="/login"
                             element={
@@ -28,11 +31,19 @@ const App = () => {
                             }
                         />
                         <Route
-                            path="/signup"
+                            path="/register"
                             element={
-                                <AntiProtectedRoute>
-                                    <Register />
-                                </AntiProtectedRoute>
+                                <ProtectedRoute>
+                                    <AddNewUser />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/taskview"
+                            element={
+                                <ProtectedRoute>
+                                    <TasksView />
+                                </ProtectedRoute>
                             }
                         />
                         <Route
@@ -43,8 +54,18 @@ const App = () => {
                                 </ProtectedRoute>
                             }
                         />
+                        <Route
+                            path="/employeesView"
+                            element={
+                                <ProtectedRoute>
+                                    <EmployeesView/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route path="/" element={<Home />} />
                     </Routes>
                 </BrowserRouter>
+                {/* </EmployeeContextProvider> */}
             </UserContextProvider>
             <Toaster
                 toastOptions={{

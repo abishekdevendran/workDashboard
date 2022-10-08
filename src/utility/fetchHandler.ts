@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useState } from 'react';
 
 const loginFetch = (formData: any) => {
     return toast.promise(
@@ -75,7 +75,7 @@ const logoutFetch = () => {
     );
 };
 
-const signupFetch = (formData: any) => {
+const employeeRegister = (formData: any) => {
     return toast.promise(
         fetch('api/register', {
             method: 'POST',
@@ -107,6 +107,74 @@ const signupFetch = (formData: any) => {
         {
             loading: 'Signing up...',
             success: 'Signed up successfully!',
+            error: (err) => err.message
+        }
+    );
+};
+
+const employeeFetch = () => {
+    return fetch('api/employees/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+    })
+        .then((res) => {
+            if (res.status === 404) {
+                throw Error('404 Not Found');
+            } else if (res.status === 500) {
+                throw Error('500 Internal Server Error');
+            } else if (res.status === 503) {
+                throw Error('503 Service Unavailable');
+            } else if (!res.ok) {
+                throw Error('An unknown error occured');
+            }
+            return res.json();
+        })
+        .then((res) => {
+            if (res.message === 'Success') {
+                return res;
+            } else {
+                throw Error(res.message);
+            }
+        });
+};
+
+const employeeDelete = (id: string) => {
+    return toast.promise(
+        fetch('api/employees/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id
+            }),
+            credentials: 'include'
+        })
+            .then((res) => {
+                if (res.status === 404) {
+                    throw Error('404 Not Found');
+                } else if (res.status === 500) {
+                    throw Error('500 Internal Server Error');
+                } else if (res.status === 503) {
+                    throw Error('503 Service Unavailable');
+                } else if (!res.ok) {
+                    throw Error('An unknown error occured');
+                }
+                return res.json();
+            })
+            .then((res) => {
+                if (res.message === 'Success') {
+                    return res;
+                } else {
+                    throw Error(res.message);
+                }
+            }),
+        {
+            loading: 'Deleting employee...',
+            success: 'Employee deleted...',
             error: (err) => err.message
         }
     );
@@ -145,6 +213,109 @@ const getUserFetch = () => {
             }
             return res;
         });
+};
+
+const tasksFetch = () => {
+    return fetch('api/tasks/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+    })
+        .then((res) => {
+            if (res.status === 404) {
+                throw Error('404 Not Found');
+            } else if (res.status === 500) {
+                throw Error('500 Internal Server Error');
+            } else if (res.status === 503) {
+                throw Error('503 Service Unavailable');
+            } else if (!res.ok) {
+                throw Error('An unknown error occured');
+            }
+            return res.json();
+        })
+        .then((res) => {
+            if (res.message === 'Success') {
+                return res;
+            } else {
+                throw Error(res.message);
+            }
+        });
+};
+
+const tasksMutateAdd = (formData: any) => {
+    return toast.promise(
+        fetch('api/tasks/new', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(formData)
+        })
+            .then((res) => {
+                if (res.status === 404) {
+                    throw Error('404 Not Found');
+                } else if (res.status === 500) {
+                    throw Error('500 Internal Server Error');
+                } else if (res.status === 503) {
+                    throw Error('503 Service Unavailable');
+                } else if (!res.ok) {
+                    throw Error('An unknown error occured');
+                }
+                return res.json();
+            })
+            .then((res) => {
+                if (res.message === 'Success') {
+                    return res;
+                } else {
+                    throw Error(res.message);
+                }
+            }),
+        {
+            loading: 'Adding task...',
+            success: 'Task created successfully!',
+            error: (err) => err.message
+        }
+    );
+};
+
+const tasksMutateDelete = (taskId: number) => {
+    return toast.promise(
+        fetch(`api/tasks/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: taskId }),
+            credentials: 'include'
+        })
+            .then((res) => {
+                if (res.status === 404) {
+                    throw Error('404 Not Found');
+                } else if (res.status === 500) {
+                    throw Error('500 Internal Server Error');
+                } else if (res.status === 503) {
+                    throw Error('503 Service Unavailable');
+                } else if (!res.ok) {
+                    throw Error('An unknown error occured');
+                }
+                return res.json();
+            })
+            .then((res) => {
+                if (res.message === 'Success') {
+                    return res;
+                } else {
+                    throw Error(res.message);
+                }
+            }),
+        {
+            loading: 'Deleting task...',
+            success: 'Task deleted successfully!',
+            error: (err) => err.message
+        }
+    );
 };
 
 const useUser = () => {
@@ -192,16 +363,105 @@ const useUser = () => {
                 console.error(err);
             });
     };
-    const signup = (formData: any) => {
-        signupFetch(formData)
-            .then((res) => {
-                setUser(res.user);
-            })
-            .catch((err) => {
-                console.error(err);
+    return [user, login, logout];
+};
+
+const useRegister = () => {
+    const [tempEmployee, setTempEmployee] = useState<any>(null);
+    const queryClient = useQueryClient();
+    const employeeQuery = useQuery('employee', employeeFetch);
+    const employeeMutation = useMutation(
+        (formData: any) => employeeRegister(formData),
+        {
+            onMutate: (formData) => {
+                queryClient.setQueryData('employee', (oldData: any) => {
+                    return {
+                        message: 'Success',
+                        employees: [...oldData.employees, formData]
+                    };
+                });
+            },
+            onError: (formData: any) => {
+                queryClient.setQueryData('employee', (oldData: any) => {
+                    return oldData.employees.filter(
+                        (data: any) => data.username !== formData.username
+                    );
+                });
+            }
+        }
+    );
+    const employeeTermination = useMutation(
+        (formData: any) => employeeDelete(formData),
+        {
+            onMutate: (formData: string) => {
+                queryClient.setQueryData('employee', (oldData: any) => {
+                    console.log("old data: ", oldData);
+                    return {
+                        ...oldData,
+                        tasks: oldData.employees.filter((data: any) => {
+                            setTempEmployee(data);
+                            return data._id !== formData;
+                        })
+                    };
+                });
+            },
+            onSuccess: () => {
+                queryClient.invalidateQueries('employee');
+            },
+            onError: () => {
+                queryClient.setQueryData('employee', (oldData: any) => {
+                    return {
+                        message: 'Success',
+                        tasks: [...oldData.employees, tempEmployee]
+                    };
+                });
+            }
+        }
+    );
+    return { employeeQuery, employeeMutation, employeeTermination };
+};
+
+const useTasks = () => {
+    const queryClient = useQueryClient();
+    const [tempTask, setTempTask] = useState<any>(null);
+    const tasksQuery = useQuery('tasks', tasksFetch);
+    const tasksAdd = useMutation((formData: any) => tasksMutateAdd(formData), {
+        //cant do optimistic update as we dont know the task ID yet.
+        onSuccess: () => {
+            queryClient.invalidateQueries('tasks');
+        },
+        onError: (formData: any) => {
+            queryClient.setQueryData('tasks', (oldData: any) => {
+                return oldData.tasks.filter((data: any) => data !== formData);
             });
-    };
-    return [user, login, logout, signup];
+        }
+    });
+    const tasksDelete = useMutation(
+        (taskId: number) => tasksMutateDelete(taskId),
+        {
+            onMutate: (taskId: number) => {
+                queryClient.setQueryData('tasks', (oldData: any) => {
+                    return {
+                        ...oldData,
+                        tasks: oldData.tasks.filter((data: any) => {
+                            setTempTask(data);
+                            return data._id !== taskId;
+                        })
+                    };
+                });
+            },
+            onError: () => {
+                queryClient.setQueryData('tasks', (oldData: any) => {
+                    return {
+                        message: 'Success',
+                        tasks: [...oldData.tasks, tempTask]
+                    };
+                });
+            }
+        }
+    );
+    return { tasksQuery, tasksAdd, tasksDelete };
 };
 
 export default useUser;
+export { useRegister, useTasks };

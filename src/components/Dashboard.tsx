@@ -1,9 +1,16 @@
 import { useContext } from 'react';
-import { Navigate } from 'react-router';
 import UserContext from '../contexts/userContext';
+import AdminDashboard from './AdminDashboard';
+import EmployeeDashboard from './EmployeeDashboard';
 
 const Dashboard = () => {
-    return <div>Dashboard</div>;
+    const {user} = useContext(UserContext);
+    if (user.isAdmin){
+        return <AdminDashboard/>
+    }
+    else{
+        return <EmployeeDashboard/>
+    }
 };
 
 export default Dashboard;

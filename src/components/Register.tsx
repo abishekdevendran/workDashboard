@@ -9,19 +9,21 @@ const Register = () => {
         let sendData = {
             username: data.get('username'),
             password: data.get('password'),
-            isAdmin: data.get('isAdmin')==="on"?true:false
+            isAdmin: data.get('isAdmin') === 'on' ? true : false
         };
         console.log(sendData);
         signup(sendData);
     };
     return (
-        <div>
+        <div className="w-1/2">
             Register
-            <form onSubmit={handleRegister}>
+            <form
+                onSubmit={handleRegister}
+                className="flex flex-col items-stretch">
                 <input type="text" placeholder="Username" name="username" />
                 <input type="password" placeholder="Password" name="password" />
                 <input type="checkbox" name="isAdmin" defaultChecked={false} />
-                <button type="submit">Login</button>
+                <button type="submit">Register New User</button>
             </form>
         </div>
     );
