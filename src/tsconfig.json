@@ -13,14 +13,11 @@
         "moduleResolution": "Node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": false,
+        "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["./*.ts"],
-    "references": [{ "path": "./tsconfig.node.json" }],
-    "exclude": ["node_modules", "dist"],
+    "include": [ "./*.ts"],
     "types":[],
-    "typeRoots": ["./node_modules/@types"],
     "ts-node": {
         "transpileOnly": true
     }

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../contexts/userContext';
 import AddNewUser from './AddNewUser';
+import React from 'react';
 
 const Register = () => {
     

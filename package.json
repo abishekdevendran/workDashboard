@@ -8,8 +8,8 @@
     },
     "scripts": {
         "dev": "concurrently --kill-others \"nodemon index.ts\" \"vite --open\"",
-        "build": "npm install && tsc && vite build && tsc ./index.ts --esModuleInterop --transpileOnly",
-        "buildServer": "tsc ./index.ts --esModuleInterop",
+        "build": "npm install && tsc && vite build && tsc --esModuleInterop",
+        "buildServer": "tsc --esModuleInterop",
         "buildClient": "tsc && vite build",
         "preview": "vite preview",
         "start": "node ./index.js"
@@ -47,6 +47,7 @@
         "@types/passport-local": "^1.0.34",
         "@types/react": "^18.0.17",
         "@types/react-dom": "^18.0.6",
+        "@types/redis": "^4.0.11",
         "@vitejs/plugin-react": "^2.1.0",
         "autoprefixer": "^10.4.12",
         "concurrently": "^7.4.0",

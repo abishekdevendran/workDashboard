@@ -1,5 +1,6 @@
 import { UseMutationResult } from 'react-query';
 import { MdDeleteOutline } from 'react-icons/md';
+import React from 'react';
 
 type Iprops = {
     id: number;

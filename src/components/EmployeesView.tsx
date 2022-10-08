@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import UserContext from '../contexts/userContext';
 import { useRegister } from '../utility/fetchHandler';
 import Employee from './Employee';
+import React from 'react';
 
 const EmployeesView = () => {
     const { user } = useContext(UserContext);
