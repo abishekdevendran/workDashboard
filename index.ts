@@ -79,6 +79,7 @@ app.use(sessionMiddleware);
 //auth middleware
 const auth = (req: any, res: any, next: any) => {
     if (req.session.user) {
+        console.log('logged in');
         return next();
     }
     res.send({
@@ -90,6 +91,7 @@ const auth = (req: any, res: any, next: any) => {
 const admin = (req: any, res: any, next: any) => {
     console.log(req.session.user);
     if (req.session.user.isAdmin) {
+        console.log('is admin');
         return next();
     }
     res.send({ message: 'You are not authorized to view this page' });
@@ -192,11 +194,13 @@ app.get('/api/employees/all', (req, res) => {
 app.delete('/api/employees/delete', auth, admin, (req, res) => {
     console.log('delete employee', req.body);
     //delete user by id if not admin
-    User.deleteOne({ _id: req.body.id, isAdmin: false }).then(() => {
-        res.send({ message: 'Success' });
-    }).catch((err) =>{
-        console.error(err);
-    });
+    User.deleteOne({ _id: req.body.id, isAdmin: false })
+        .then(() => {
+            res.send({ message: 'Success' });
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 });
 //post new task
 app.post('/api/tasks/new', auth, (req, res) => {
@@ -252,6 +256,14 @@ app.delete('/api/tasks/delete', auth, (req, res) => {
             res.send({ message: err });
         });
 });
+app.get('/api/tasks/:id', auth, admin, (req, res) => {
+    console.log('getting tasks from: ', req.params.id);
+    User.findById(req.params.id).then((user) => {
+        if (user) {
+            res.send({ message: 'Success', tasks: user.tasks, user: user });
+        }
+    });
+});
 //get all tasks for user
 app.get('/api/tasks', auth, (req, res) => {
     User.findById(req.session.user._id).then((user) => {
@@ -260,6 +272,7 @@ app.get('/api/tasks', auth, (req, res) => {
         }
     });
 });
+//get all tasks for ID
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });

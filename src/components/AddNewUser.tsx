@@ -17,9 +17,13 @@ const AddNewUser = () => {
         employeeMutation.mutate(formData);
     }
   return (
-      <div className="formContainer flex flex-col items-center justify-center ">
-          AddNewUser
-          <form onSubmit={handleSubmit} className="flex flex-col items-stretch">
+      <div className="formContainer flex flex-col items-center justify-center h-full">
+          <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-stretch bg-slate-600 p-8 rounded-3xl mb-12">
+              <h1 className="self-center font-poppins font-extrabold text-white text-6xl m-8">
+                  Register
+              </h1>
               <label htmlFor="username:">Username</label>
               <input
                   type="text"

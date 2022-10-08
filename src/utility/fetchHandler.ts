@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const loginFetch = (formData: any) => {
     return toast.promise(
-        fetch('api/login', {
+        fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ const loginFetch = (formData: any) => {
 
 const logoutFetch = () => {
     return toast.promise(
-        fetch('api/logout', {
+        fetch('/api/logout', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ const logoutFetch = () => {
 
 const employeeRegister = (formData: any) => {
     return toast.promise(
-        fetch('api/register', {
+        fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ const employeeRegister = (formData: any) => {
 };
 
 const employeeFetch = () => {
-    return fetch('api/employees/all', {
+    return fetch('/api/employees/all', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ const employeeFetch = () => {
 
 const employeeDelete = (id: string) => {
     return toast.promise(
-        fetch('api/employees/delete', {
+        fetch('/api/employees/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -181,7 +181,7 @@ const employeeDelete = (id: string) => {
 };
 
 const getUserFetch = () => {
-    return fetch('api/user', {
+    return fetch('/api/user', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -216,7 +216,7 @@ const getUserFetch = () => {
 };
 
 const tasksFetch = () => {
-    return fetch('api/tasks/', {
+    return fetch('/api/tasks/', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -244,9 +244,46 @@ const tasksFetch = () => {
         });
 };
 
+const tasksFetchId = (id: string) => {
+    console.log(id);
+    return toast.promise(
+        fetch('/api/tasks/' + id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then((res) => {
+                if (res.status === 404) {
+                    throw Error('404 Not Found');
+                } else if (res.status === 500) {
+                    throw Error('500 Internal Server Error');
+                } else if (res.status === 503) {
+                    throw Error('503 Service Unavailable');
+                } else if (!res.ok) {
+                    throw Error('An unknown error occured');
+                }
+                return res.json();
+            })
+            .then((res) => {
+                if (res.message === 'Success') {
+                    return res;
+                } else {
+                    throw Error(res.message);
+                }
+            }),
+        {
+            loading: 'Fetching tasks for user with id ' + id + '.',
+            success: 'Done fetching!',
+            error: (err) => err.message
+        }
+    );
+};
+
 const tasksMutateAdd = (formData: any) => {
     return toast.promise(
-        fetch('api/tasks/new', {
+        fetch('/api/tasks/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -283,7 +320,7 @@ const tasksMutateAdd = (formData: any) => {
 
 const tasksMutateDelete = (taskId: number) => {
     return toast.promise(
-        fetch(`api/tasks/delete`, {
+        fetch(`/api/tasks/delete`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -395,7 +432,7 @@ const useRegister = () => {
         {
             onMutate: (formData: string) => {
                 queryClient.setQueryData('employee', (oldData: any) => {
-                    console.log("old data: ", oldData);
+                    console.log('old data: ', oldData);
                     return {
                         ...oldData,
                         tasks: oldData.employees.filter((data: any) => {
@@ -463,5 +500,12 @@ const useTasks = () => {
     return { tasksQuery, tasksAdd, tasksDelete };
 };
 
+const useAdminTasks = (id: string) => {
+    const adminTasksQuery = useQuery(['admin-tasks', id], () =>
+        tasksFetchId(id)
+    );
+    return adminTasksQuery;
+};
+
 export default useUser;
-export { useRegister, useTasks };
+export { useRegister, useTasks, useAdminTasks };

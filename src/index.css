@@ -31,4 +31,8 @@
     height: 100vh;
     background-color: var(--bg-primary);
   }
+  #root{
+    height:100%;
+    overflow-x:hidden;
+    }
 }

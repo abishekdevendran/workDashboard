@@ -1,16 +1,31 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/userContext";
+import AddNewUser from "./AddNewUser";
+import EmployeesView from "./EmployeesView";
 
 const AdminDashboard = () => {
   const {logout}=useContext(UserContext);
   return (
-      <div>
+      <div className="h-full">
           <div className=" w-full bg-white p-4 flex justify-between">
-              <h1 className="font-bold text-4xl">Admin Dashboard</h1>
-              <button onClick={logout} className="hover:scale-125 transition-all">Logout</button>
+              <Link className="font-bold text-4xl" to={'/dashboard'}>
+                  Admin Dashboard
+              </Link>
+              <button
+                  onClick={logout}
+                  className="hover:scale-125 transition-all">
+                  Logout
+              </button>
           </div>
-          <Link to="/taskview">Tasks View</Link>
+          <div className="w-full h-full flex flex-row">
+              <div className="w-1/2 h-full border-2 border-dashed">
+                  <EmployeesView />
+              </div>
+              <div className="w-1/2 h-full border-2 border-dashed">
+                  <AddNewUser />
+              </div>
+          </div>
       </div>
   );
 }

@@ -14,14 +14,35 @@ const Login = () => {
     login(sendData);
   }
   return (
-    <div>Login
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Username" name="username" />
-            <input type="password" placeholder="Password" name="password" />
-            <button type="submit">Login</button>
-        </form>
-    </div>
-  )
+      <div className="formContainer flex flex-col items-center justify-center h-full">
+          <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-stretch  bg-slate-600 p-8 rounded-3xl">
+                <h1 className="self-center font-poppins font-extrabold text-white text-6xl m-8">Login</h1>
+              <label htmlFor="username">Username:</label>
+              <input
+                  type="text"
+                  placeholder="Username"
+                  name="username"
+                  className="rounded-full px-2"
+                  required
+              />
+              <label htmlFor="password">Password:</label>
+              <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  className="rounded-full px-2"
+                  required
+              />
+              <button
+                  type="submit"
+                  className="bg-white rounded-full p-1 w-2/5 self-center hover:scale-110 mt-16 transition-all">
+                  Login
+              </button>
+          </form>
+      </div>
+  );
 }
 
 export default Login

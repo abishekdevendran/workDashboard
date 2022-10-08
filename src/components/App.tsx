@@ -9,9 +9,11 @@ import Dashboard from './Dashboard';
 import Home from './Home';
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
-import AddNewUser from './AddNewUser';
 import TasksView from './TasksView';
 import EmployeesView from './EmployeesView';
+import Register from './Register';
+import EmployeeView from './EmployeeView';
+import CatchAll from './CatchAll';
 
 const queryClient = new QueryClient();
 
@@ -34,7 +36,7 @@ const App = () => {
                             path="/register"
                             element={
                                 <ProtectedRoute>
-                                    <AddNewUser />
+                                    <Register />
                                 </ProtectedRoute>
                             }
                         />
@@ -55,14 +57,33 @@ const App = () => {
                             }
                         />
                         <Route
-                            path="/employeesView"
+                            path="/employeesView">
+                            <Route
+                                path=":id"
+                                element={
+                                    <ProtectedRoute>
+                                        <EmployeeView />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                            path=""
                             element={
                                 <ProtectedRoute>
-                                    <EmployeesView/>
+                                    <EmployeesView />
                                 </ProtectedRoute>
+                            }></Route>
+                        </Route>
+                        <Route
+                            path="/"
+                            element={
+                                <AntiProtectedRoute>
+                                    <Home />
+                                </AntiProtectedRoute>
                             }
                         />
-                        <Route path="/" element={<Home />} />
+                        {/* catchall route */}
+                        <Route path="*" element={<CatchAll />} />
                     </Routes>
                 </BrowserRouter>
                 {/* </EmployeeContextProvider> */}
