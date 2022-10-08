@@ -8,7 +8,7 @@
     },
     "scripts": {
         "dev": "concurrently --kill-others \"nodemon index.ts\" \"vite --open\"",
-        "build": "npm install && tsc && vite build && tsc ./index.ts --esModuleInterop",
+        "build": "npm install && tsc && vite build && tsc ./index.ts --esModuleInterop --transpileOnly",
         "buildServer": "tsc ./index.ts --esModuleInterop",
         "buildClient": "tsc && vite build",
         "preview": "vite preview",
