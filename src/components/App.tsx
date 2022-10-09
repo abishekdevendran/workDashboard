@@ -15,6 +15,7 @@ import Register from './Register';
 import EmployeeView from './EmployeeView';
 import CatchAll from './CatchAll';
 import React from 'react';
+import EditProfile from './EditProfile';
 
 const queryClient = new QueryClient();
 
@@ -57,8 +58,7 @@ const App = () => {
                                 </ProtectedRoute>
                             }
                         />
-                        <Route
-                            path="/employeesView">
+                        <Route path="/employeesView">
                             <Route
                                 path=":id"
                                 element={
@@ -68,13 +68,20 @@ const App = () => {
                                 }
                             />
                             <Route
-                            path=""
+                                path=""
+                                element={
+                                    <ProtectedRoute>
+                                        <EmployeesView />
+                                    </ProtectedRoute>
+                                }></Route>
+                        </Route>
+                        <Route path="/editProfile"
                             element={
                                 <ProtectedRoute>
-                                    <EmployeesView />
+                                    <EditProfile/>
                                 </ProtectedRoute>
-                            }></Route>
-                        </Route>
+                            }
+                        />
                         <Route
                             path="/"
                             element={

@@ -59,6 +59,7 @@ const sessionMiddleware = session({
     resave: false,
     proxy: true,
     name: 'work-dashboard',
+    rolling: true,
     cookie: {
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
         secure: process.env.NODE_ENV === 'production',
@@ -106,7 +107,6 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/login', (req, res) => {
     console.log('login');
     //check if username exists in db
-    console.log(req.body);
     User.findOne(
         { username: req.body.username },
         async (err: any, user: any) => {
@@ -130,7 +130,6 @@ app.post('/api/login', (req, res) => {
 //register route
 app.post('/api/register', auth, admin, (req, res) => {
     console.log('register');
-    console.log(req.body);
     //check if username exists in db
     User.findOne(
         { username: req.body.username },
@@ -160,6 +159,26 @@ app.post('/api/register', auth, admin, (req, res) => {
     );
 });
 
+//user edit route
+app.put('/api/user/edit', auth, (req, res) => {
+    console.log('edit user...');
+    User.findOne(
+        { _id: req.session.user._id },
+        async (err: any, user: any): Promise<void> => {
+            (user.username = req.body.username),
+                (user.contact = req.body.contact);
+            user.department = req.body.department;
+            if (req.body.password.length > 0) {
+                user.password = bcrypt.hashSync(req.body.password, 10);
+            }
+            await user.save();
+            console.log('user updated');
+            req.session.user = user;
+            res.send({ message: 'Success', user: user });
+        }
+    );
+});
+
 //check user route
 app.get('/api/user', (req, res) => {
     console.log('check user');
@@ -174,7 +193,7 @@ app.get('/api/user', (req, res) => {
 app.get('/api/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            console.log(err);
+            console.error(err);
         }
         res.send({ message: 'Success' });
     });

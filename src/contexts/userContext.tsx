@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, ReactNode } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import useUser from '../utility/fetchHandler';
 
 export const UserContext = createContext<any>({});
@@ -8,9 +8,9 @@ type IProps = {
 };
 
 export const UserContextProvider = (props: IProps) => {
-    const [user,login,logout]=useUser();
+    const [user,login,logout,update]=useUser();
     return (
-        <UserContext.Provider value={{ user, login, logout}}>
+        <UserContext.Provider value={{ user, login, logout, update}}>
             {props.children}
         </UserContext.Provider>
     );

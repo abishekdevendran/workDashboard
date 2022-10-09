@@ -64,6 +64,6 @@ export default function(tasks:any){
     dataYesterday=dataYesterday.filter((element:any)=>{
         return ((element.value!==0)?true:false);
     });
-    console.log(dataToday, dataYesterday);
+    // console.log(dataToday, dataYesterday);
     return [dataToday,dataYesterday];
 }

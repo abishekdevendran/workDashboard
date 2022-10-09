@@ -75,6 +75,42 @@ const logoutFetch = () => {
     );
 };
 
+const userEditFetch=((formData:any) => {
+    return toast.promise(
+        fetch('/api/user/edit', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(formData)
+        })            .then((res) => {
+                if (res.status === 404) {
+                    throw Error('404 Not Found');
+                } else if (res.status === 500) {
+                    throw Error('500 Internal Server Error');
+                } else if (res.status === 503) {
+                    throw Error('503 Service Unavailable');
+                } else if (!res.ok) {
+                    throw Error('An unknown error occured');
+                }
+                return res.json();
+            })
+            .then((res) => {
+                if (res.message === 'Success') {
+                    return res;
+                } else {
+                    throw Error(res.message);
+                }
+            }
+        ),
+        {
+            loading: 'Edit in progress...',
+            success: 'Edit sucessful!',
+            error: (err) => err.message
+        });
+});
+
 const employeeRegister = (formData: any) => {
     return toast.promise(
         fetch('/api/register', {
@@ -400,7 +436,16 @@ const useUser = () => {
                 console.error(err);
             });
     };
-    return [user, login, logout];
+    const update = (formData: any) => {
+        userEditFetch(formData)
+            .then((res) => {
+                setUser(res.user);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+    return [user, login, logout, update];
 };
 
 const useRegister = () => {

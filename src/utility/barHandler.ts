@@ -5,7 +5,7 @@ export default function (tasks: any) {
         let tempDate=new Date();
         tempDate.setDate(tempDate.getDate() - i);
         let date=new Date(tempDate).toLocaleDateString('en-CA');
-        console.log(tasks,date);
+        // console.log(tasks,date);
         // tasks.reduce((accumulated, current) => {
         //     if (
         //         String(date) === String(current.startTime) &&
@@ -36,6 +36,6 @@ export default function (tasks: any) {
         },0);
         day.push(tempDay);
     }
-    console.log(day);
+    // console.log(day);
     return day;
 }

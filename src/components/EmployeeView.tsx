@@ -4,15 +4,20 @@ import { Link } from 'react-router-dom';
 import UserContext from '../contexts/userContext';
 import { useAdminTasks } from '../utility/fetchHandler';
 import pieHandler from '../utility/pieHandler';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import React from 'react';
 import { BarChart, XAxis, YAxis, Bar, CartesianGrid, Tooltip, Legend } from 'recharts';
 import barHandler from '../utility/barHandler';
 import Task from './Task';
 import getToday from '../utility/getToday';
 import getYesterday from '../utility/getYesterday';
+import taskFilter from '../utility/taskFilter';
 
 const EmployeeView = () => {
+    const [filterDate, setFilterDate] = useState({
+        date: getToday(),
+        isFilter: false
+    });
     const { user } = useContext(UserContext);
     const { id } = useParams();
     const adminTasksQuery = useAdminTasks(id!);
@@ -48,8 +53,11 @@ const EmployeeView = () => {
                                             <PieChart
                                                 data={
                                                     pieHandler(
-                                                        adminTasksQuery.data
-                                                            .tasks
+                                                        taskFilter(
+                                                            adminTasksQuery.data
+                                                                .tasks,
+                                                            filterDate
+                                                        )
                                                     )[0]
                                                 }
                                                 className="h-80 w-80 font-poppins text-xs"
@@ -74,8 +82,11 @@ const EmployeeView = () => {
                                             <PieChart
                                                 data={
                                                     pieHandler(
-                                                        adminTasksQuery.data
-                                                            .tasks
+                                                        taskFilter(
+                                                            adminTasksQuery.data
+                                                                .tasks,
+                                                            filterDate
+                                                        )
                                                     )[1]
                                                 }
                                                 className="h-80 w-80 font-poppins text-xs"
@@ -103,11 +114,18 @@ const EmployeeView = () => {
                                         width={500}
                                         height={400}
                                         data={barHandler(
-                                            adminTasksQuery.data.tasks
+                                            taskFilter(
+                                                adminTasksQuery.data.tasks,
+                                                filterDate
+                                            )
                                         )}>
                                         <CartesianGrid />
                                         <Tooltip />
-                                        <Legend align="left" />
+                                        <Legend
+                                            layout="horizontal"
+                                            verticalAlign="top"
+                                            align="center"
+                                        />
                                         <XAxis
                                             dataKey="name"
                                             label={{
@@ -149,18 +167,47 @@ const EmployeeView = () => {
                                 Viewing tasks for:{' '}
                                 {adminTasksQuery.data.user.username}
                             </div>
-                            {adminTasksQuery.data.tasks.map(
-                                (task: any, index: number) => (
-                                    <Task
-                                        key={index}
-                                        id={task._id}
-                                        description={task.description}
-                                        taskType={task.taskType}
-                                        startTime={task.startTime}
-                                        duration={task.duration}
+                            <div className="formContainer w-full flex flex-col items-center">
+                                <h2>Filter :</h2>
+                                <form className="form flex flex-row w-1/6 items-center justify-around">
+                                    <input
+                                        type="date"
+                                        onChange={(e) =>
+                                            setFilterDate({
+                                                date: e.target.value,
+                                                isFilter: true
+                                            })
+                                        }
+                                        className="rounded-full px-2 cursor-pointer"
+                                        value={filterDate.date}
+                                        max={getToday()}
                                     />
-                                )
-                            )}
+                                    <input
+                                        type="checkbox"
+                                        className="rounded-full px-2 scale-150 cursor-pointer"
+                                        onChange={(e) =>
+                                            setFilterDate({
+                                                ...filterDate,
+                                                isFilter: e.target.checked
+                                            })
+                                        }
+                                        checked={filterDate.isFilter}
+                                    />
+                                </form>
+                            </div>
+                            {taskFilter(
+                                adminTasksQuery.data.tasks,
+                                filterDate
+                            ).map((task: any, index: number) => (
+                                <Task
+                                    key={index}
+                                    id={task._id}
+                                    description={task.description}
+                                    taskType={task.taskType}
+                                    startTime={task.startTime}
+                                    duration={task.duration}
+                                />
+                            ))}
                             {adminTasksQuery.data?.tasks.length === 0 && (
                                 <div className="font-poppins text-4xl font-bold">
                                     Employee hasn't filed data here yet.

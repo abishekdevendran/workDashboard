@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-import { BarChart, XAxis, YAxis, Bar, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
+import { BarChart, XAxis, YAxis, Bar, CartesianGrid, Tooltip, Legend } from 'recharts';
 import barHandler from '../utility/barHandler';
 import { useTasks } from '../utility/fetchHandler';
 import getToday from '../utility/getToday';
 import getYesterday from '../utility/getYesterday';
 import pieHandler from '../utility/pieHandler';
+import taskFilter from '../utility/taskFilter';
 import Task from './Task';
 import TaskForm from './TaskForm';
 
 const TasksView = () => {
+    const [filterDate, setFilterDate] = useState({ date: getToday(), isFilter: false });
     const { tasksQuery, tasksAdd, tasksDelete } = useTasks();
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,7 +38,10 @@ const TasksView = () => {
                                         <PieChart
                                             data={
                                                 pieHandler(
-                                                    tasksQuery.data.tasks
+                                                    taskFilter(
+                                                        tasksQuery.data.tasks,
+                                                        filterDate
+                                                    )
                                                 )[0]
                                             }
                                             className="h-80 w-80 font-poppins text-xs"
@@ -61,7 +66,10 @@ const TasksView = () => {
                                         <PieChart
                                             data={
                                                 pieHandler(
-                                                    tasksQuery.data.tasks
+                                                    taskFilter(
+                                                        tasksQuery.data.tasks,
+                                                        filterDate
+                                                    )
                                                 )[1]
                                             }
                                             className="h-80 w-80 font-poppins text-xs"
@@ -89,10 +97,19 @@ const TasksView = () => {
                             <BarChart
                                 width={500}
                                 height={400}
-                                data={barHandler(tasksQuery.data.tasks)}>
+                                data={barHandler(
+                                    taskFilter(
+                                        tasksQuery.data.tasks,
+                                        filterDate
+                                    )
+                                )}>
                                 <CartesianGrid />
                                 <Tooltip />
-                                <Legend align="left" />
+                                <Legend
+                                    layout="horizontal"
+                                    verticalAlign="top"
+                                    align="center"
+                                />
                                 <XAxis
                                     dataKey="name"
                                     label={{
@@ -133,17 +150,47 @@ const TasksView = () => {
                     {/* <div className="font-poppins text-4xl font-bold">
                         Viewing tasks for: {tasksQuery.data.user.username}
                     </div> */}
-                    {tasksQuery.data.tasks.map((task: any, index: number) => (
-                        <Task
-                            key={index}
-                            id={task._id}
-                            description={task.description}
-                            taskType={task.taskType}
-                            startTime={task.startTime}
-                            duration={task.duration}
-                            deleteTask={tasksDelete}
-                        />
-                    ))}
+                    <div className="formContainer w-full flex flex-col items-center">
+                        <h2>Filter :</h2>
+                        <form className="form flex flex-row w-1/6 items-center justify-around">
+                            <input
+                                type="date"
+                                onChange={(e) =>
+                                    setFilterDate({
+                                        date: e.target.value,
+                                        isFilter: true
+                                    })
+                                }
+                                className="rounded-full px-2 cursor-pointer"
+                                value={filterDate.date}
+                                max={getToday()}
+                            />
+                            <input
+                                type="checkbox"
+                                className="rounded-full px-2 scale-150 cursor-pointer"
+                                onChange={(e) =>
+                                    setFilterDate({
+                                        ...filterDate,
+                                        isFilter: e.target.checked
+                                    })
+                                }
+                                checked={filterDate.isFilter}
+                            />
+                        </form>
+                    </div>
+                    {taskFilter(tasksQuery.data.tasks, filterDate).map(
+                        (task: any, index: number) => (
+                            <Task
+                                key={index}
+                                id={task._id}
+                                description={task.description}
+                                taskType={task.taskType}
+                                startTime={task.startTime}
+                                duration={task.duration}
+                                deleteTask={tasksDelete}
+                            />
+                        )
+                    )}
                 </>
             )}
 
