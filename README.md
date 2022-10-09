@@ -53,7 +53,6 @@ Following are the NPM Libraries used in this web app
 <ol>
     <li>Express - Web app framework (REST APIs)
     <li>Concurrently - Running of multiple concurrent commands
-    <li>jsonwebtoken - JWT support for Express
     <li>mongoose - MongoDB ORM for express and nodejs
     <li>bcryptjs - Password hashing and comparing package
     <li>fetchAPI - Javascript client library that can be used to access and manipulate HTTP / REST endpoints
@@ -67,7 +66,6 @@ Following are the NPM Libraries used in this web app
     <li>React-hot-toast - Customisable and fully controllable toast notifications
     <li>helmet - Security Tool to safeguard your Express/Web App from Vulnerabilities
     <li>nodemon - Express listening reactoring
-    <li>react-router-dom - Basic React routing support
     <li>React-Query - Complete caching and reactive HTTP responses client library
     <li>Recharts - React Charts Library
     <li>React-minimal-pie-chart - React pie chart library
