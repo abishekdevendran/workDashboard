@@ -1,8 +1,10 @@
 import React from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-import { BarChart, XAxis, YAxis, Bar, CartesianGrid } from 'recharts';
+import { BarChart, XAxis, YAxis, Bar, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
 import barHandler from '../utility/barHandler';
 import { useTasks } from '../utility/fetchHandler';
+import getToday from '../utility/getToday';
+import getYesterday from '../utility/getYesterday';
 import pieHandler from '../utility/pieHandler';
 import Task from './Task';
 import TaskForm from './TaskForm';
@@ -30,46 +32,56 @@ const TasksView = () => {
                             <TaskForm submitHandler={submitHandler} />
                             {tasksQuery.data.tasks.length > 0 && (
                                 <div className="pieContainer flex flex-row items-center justify-center">
-                                    <PieChart
-                                        data={
-                                            pieHandler(tasksQuery.data.tasks)[0]
-                                        }
-                                        className="h-80 w-80 font-poppins text-xs"
-                                        label={({ dataEntry }) => {
-                                            return (
-                                                dataEntry.title +
-                                                ': ' +
-                                                Math.round(
-                                                    dataEntry.percentage
-                                                ) +
-                                                '%'
-                                            );
-                                        }}
-                                        animate={true}
-                                        labelPosition={100}
-                                        viewBoxSize={[200, 150]}
-                                        center={[100, 50]}
-                                    />
-                                    <PieChart
-                                        data={
-                                            pieHandler(tasksQuery.data.tasks)[1]
-                                        }
-                                        className="h-80 w-80 font-poppins text-xs"
-                                        label={({ dataEntry }) => {
-                                            return (
-                                                dataEntry.title +
-                                                ': ' +
-                                                Math.round(
-                                                    dataEntry.percentage
-                                                ) +
-                                                '%'
-                                            );
-                                        }}
-                                        animate={true}
-                                        labelPosition={100}
-                                        viewBoxSize={[200, 150]}
-                                        center={[100, 50]}
-                                    />
+                                    <div className="pie flex flex-col items-center">
+                                        <PieChart
+                                            data={
+                                                pieHandler(
+                                                    tasksQuery.data.tasks
+                                                )[0]
+                                            }
+                                            className="h-80 w-80 font-poppins text-xs"
+                                            label={({ dataEntry }) => {
+                                                return (
+                                                    dataEntry.title +
+                                                    ': ' +
+                                                    Math.round(
+                                                        dataEntry.percentage
+                                                    ) +
+                                                    '%'
+                                                );
+                                            }}
+                                            animate={true}
+                                            labelPosition={100}
+                                            viewBoxSize={[200, 200]}
+                                            center={[100, 100]}
+                                        />
+                                        <h3>{getToday()}</h3>
+                                    </div>
+                                    <div className="pie flex flex-col items-center">
+                                        <PieChart
+                                            data={
+                                                pieHandler(
+                                                    tasksQuery.data.tasks
+                                                )[1]
+                                            }
+                                            className="h-80 w-80 font-poppins text-xs"
+                                            label={({ dataEntry }) => {
+                                                return (
+                                                    dataEntry.title +
+                                                    ': ' +
+                                                    Math.round(
+                                                        dataEntry.percentage
+                                                    ) +
+                                                    '%'
+                                                );
+                                            }}
+                                            animate={true}
+                                            labelPosition={100}
+                                            viewBoxSize={[200, 200]}
+                                            center={[100, 100]}
+                                        />
+                                        <h3>{getYesterday()}</h3>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -79,8 +91,23 @@ const TasksView = () => {
                                 height={400}
                                 data={barHandler(tasksQuery.data.tasks)}>
                                 <CartesianGrid />
-                                <XAxis dataKey="name" />
-                                <YAxis />
+                                <Tooltip />
+                                <Legend align="left" />
+                                <XAxis
+                                    dataKey="name"
+                                    label={{
+                                        value: 'Days of the past week',
+                                        angle: 0,
+                                        position: 'bottom'
+                                    }}
+                                />
+                                <YAxis
+                                    label={{
+                                        value: 'Time spent in minutes',
+                                        angle: 270,
+                                        position: 'middle'
+                                    }}
+                                />
                                 <Bar
                                     dataKey="work"
                                     stackId="a"
