@@ -1,4 +1,5 @@
 import React from 'react'
+import getToday from '../utility/getToday';
 
 const TaskForm = ({submitHandler}:any) => {
   return (
@@ -18,7 +19,8 @@ const TaskForm = ({submitHandler}:any) => {
                   type="date"
                   name="startTime"
                   className="rounded-full px-2"
-                  defaultValue={String(new Date().toLocaleDateString('en-CA'))}
+                  defaultValue={getToday()}
+                  max={getToday()}
               />
               <label htmlFor="duration"> Duration(mins): </label>
               <input

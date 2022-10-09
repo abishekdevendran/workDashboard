@@ -1,5 +1,6 @@
 import { useRegister } from "../utility/fetchHandler";
 import React from "react";
+import getToday from "../utility/getToday";
 
 const AddNewUser = () => {
     const {employeeMutation} = useRegister();
@@ -68,6 +69,8 @@ const AddNewUser = () => {
                   placeholder="25-09-1997"
                   name="joiningDate"
                   className="rounded-full px-2"
+                  defaultValue={getToday()}
+                  max={getToday()}
               />
               <span className="flex w-full flex-row justify-center p-2">
                   <label htmlFor="isAdmin"> Is Admin?</label>
