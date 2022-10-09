@@ -18,20 +18,23 @@ export default function(tasks:any){
         }
         return false;
     });
-    var dataToday=[{
-        title:"Work",
-        value:0,
-        color:"red"
-    },{
-        title:"Meeting",
-        value:0,
-        color:"green"
-    },
-    {
-        title:"Break",
-        value:0,
-        color:"blue"
-    }]
+    var dataToday = [
+        {
+            title: 'Work',
+            value: 0,
+            color: '#ff4d4d'
+        },
+        {
+            title: 'Meeting',
+            value: 0,
+            color: '#82ca5d'
+        },
+        {
+            title: 'Break',
+            value: 0,
+            color: '#3366ff'
+        }
+    ];
     var dataYesterday = JSON.parse(JSON.stringify(dataToday));
     filteredYesterday.forEach((element:any)=>{
         if(element.taskType==="Work"){
