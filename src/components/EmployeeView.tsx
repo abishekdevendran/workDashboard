@@ -161,6 +161,11 @@ const EmployeeView = () => {
                                     />
                                 )
                             )}
+                            {adminTasksQuery.data?.tasks.length === 0 && (
+                                <div className="font-poppins text-4xl font-bold">
+                                    Employee hasn't filed data here yet.
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
