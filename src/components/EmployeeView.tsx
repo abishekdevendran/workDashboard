@@ -20,6 +20,7 @@ import Task from './Task';
 import getToday from '../utility/getToday';
 import getYesterday from '../utility/getYesterday';
 import taskFilter from '../utility/taskFilter';
+import Loading from './Loading';
 
 const EmployeeView = () => {
     const [filterDate, setFilterDate] = useState({
@@ -32,7 +33,7 @@ const EmployeeView = () => {
     const { logout } = useContext(UserContext);
     if (user?.isAdmin) {
         return (
-            <div>
+            <div className='w-full h-full'>
                 <div className=" w-full bg-white p-4 flex justify-between">
                     <Link className="font-bold text-4xl" to={'/dashboard'}>
                         User Overview
@@ -51,8 +52,8 @@ const EmployeeView = () => {
                     </div>
                 </div>
                 <div className="taskadder flex flex-col items-center justify-center">
-                    <div className="w-full flex flex-column justify-around">
-                        {adminTasksQuery.isLoading && <div>Loading..</div>}
+                    <div className="w-full h-full flex flex-column justify-around">
+                        {adminTasksQuery.isLoading && <Loading />}
                         {adminTasksQuery.isFetched && (
                             <>
                                 <div className="leftContainer w-2/3 flex flex-col justify-center items-center p-8">

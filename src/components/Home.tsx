@@ -11,7 +11,7 @@ const Home = () => {
             </div>
             <Link
                 to="/login"
-                className="my-4 px-12 py-4 font-bold text-center text-white rounded-full bg-black">
+                className="my-4 px-12 py-4 font-bold text-center text-white rounded-full bg-black hover:scale-110 transition-all">
                 Login
             </Link>
             <div className="font-poppins font-extrabold text-xl text-gray-500">

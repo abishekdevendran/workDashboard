@@ -7,6 +7,7 @@ import getToday from '../utility/getToday';
 import getYesterday from '../utility/getYesterday';
 import pieHandler from '../utility/pieHandler';
 import taskFilter from '../utility/taskFilter';
+import Loading from './Loading';
 import Task from './Task';
 import TaskForm from './TaskForm';
 
@@ -27,7 +28,7 @@ const TasksView = () => {
     return (
         <div className="taskadder flex flex-col items-center justify-center">
             <div className="w-full flex flex-column justify-around">
-                {tasksQuery.isLoading && <div>Loading..</div>}
+                {tasksQuery.isLoading && <Loading />}
                 {tasksQuery.isFetched && (
                     <>
                         <div className="leftContainer w-2/3 flex flex-col justify-center items-center p-8">
