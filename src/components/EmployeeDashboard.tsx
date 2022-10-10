@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import UserContext from '../contexts/userContext';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import TasksView from './TasksView';
 

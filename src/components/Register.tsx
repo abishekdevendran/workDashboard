@@ -2,11 +2,8 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../contexts/userContext';
 import AddNewUser from './AddNewUser';
-import React from 'react';
-
 const Register = () => {
-    
-  const { logout } = useContext(UserContext);
+    const { logout } = useContext(UserContext);
     return (
         <div>
             <div className=" w-full bg-white p-4 flex justify-between">
@@ -19,7 +16,7 @@ const Register = () => {
                     Logout
                 </button>
             </div>
-            <AddNewUser/>
+            <AddNewUser />
         </div>
     );
 };

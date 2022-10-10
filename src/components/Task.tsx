@@ -1,7 +1,5 @@
 import { UseMutationResult } from 'react-query';
 import { MdDeleteOutline } from 'react-icons/md';
-import React from 'react';
-
 type Iprops = {
     id: number;
     description: string;
@@ -25,9 +23,9 @@ const Task = (props: Iprops) => {
                         );
                     }
                     if (key[0] === 'taskType') {
-                        if (key[1] === "Break") {
+                        if (key[1] === 'Break') {
                             return <p key={value}> - Break -</p>;
-                        } else if (key[1] === "Meeting") {
+                        } else if (key[1] === 'Meeting') {
                             return <p key={value}> - Meeting -</p>;
                         } else {
                             return <p key={value}> - Work -</p>;

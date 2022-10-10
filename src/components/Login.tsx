@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import UserContext from '../contexts/userContext';
-import React from 'react';
 import { useNavigate } from 'react-router';
 
 const Login = () => {
@@ -40,7 +39,7 @@ const Login = () => {
                     className="rounded-full px-2"
                     required
                 />
-                <div className='flex w-full items-center justify-around'>
+                <div className="flex w-full items-center justify-around">
                     <button
                         type="submit"
                         className="bg-white rounded-full p-1 w-2/5 self-center hover:scale-110 mt-16 transition-all">

@@ -14,7 +14,6 @@ import EmployeesView from './EmployeesView';
 import Register from './Register';
 import EmployeeView from './EmployeeView';
 import CatchAll from './CatchAll';
-import React from 'react';
 import EditProfile from './EditProfile';
 
 const queryClient = new QueryClient();

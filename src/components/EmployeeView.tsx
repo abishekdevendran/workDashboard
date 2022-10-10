@@ -5,8 +5,16 @@ import UserContext from '../contexts/userContext';
 import { useAdminTasks } from '../utility/fetchHandler';
 import pieHandler from '../utility/pieHandler';
 import { useContext, useState } from 'react';
-import React from 'react';
-import { BarChart, XAxis, YAxis, Bar, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+import {
+    BarChart,
+    XAxis,
+    YAxis,
+    Bar,
+    CartesianGrid,
+    Tooltip,
+    Legend
+} from 'recharts';
 import barHandler from '../utility/barHandler';
 import Task from './Task';
 import getToday from '../utility/getToday';
