@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 index.js
+vite.config.js
 dist-ssr
 *.local
 *.env
